@@ -1,0 +1,71 @@
+package com.buuz135.jeivillagers.jei;
+
+import com.buuz135.jeivillagers.Jeivillagers;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class VillagerRecipe implements IRecipeWrapper {
+
+    private final VillagerRegistry.VillagerCareer career;
+    private final Jeivillagers.VillagerTradeInfo tradeInfo;
+
+    public VillagerRecipe(VillagerRegistry.VillagerCareer career, Jeivillagers.VillagerTradeInfo tradeInfo) {
+        this.career = career;
+        this.tradeInfo = tradeInfo;
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, Arrays.asList(tradeInfo.firstInput, tradeInfo.secondInput));
+        ingredients.setOutput(ItemStack.class, tradeInfo.outputStack);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+        int y = 38;
+        drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Career: " + new TextComponentTranslation("entity.Villager." + career.getName()).getUnformattedComponentText(), 53, -1);
+        if (tradeInfo.first != null) {
+            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "First input range: " + tradeInfo.first.getFirst() + "-" + tradeInfo.first.getSecond(), 53, y);
+            y += minecraft.fontRenderer.FONT_HEIGHT + 2;
+        }
+        if (tradeInfo.second != null) {
+            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Second input range: " + tradeInfo.second.getFirst() + "-" + tradeInfo.second.getSecond(), 53, y);
+            y += minecraft.fontRenderer.FONT_HEIGHT + 2;
+        }
+        if (tradeInfo.output != null) {
+            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Output range: " + tradeInfo.output.getFirst() + "-" + tradeInfo.output.getSecond(), 53, y);
+        }
+        if (tradeInfo.outputStack.isItemEnchanted() || tradeInfo.outputStack.getItem().equals(Items.ENCHANTED_BOOK)) {
+            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Output with random enchant", 53, y);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void drawStringCentered(FontRenderer fontRenderer, String text, int x, int y) {
+        fontRenderer.drawString(text, (x - fontRenderer.getStringWidth(text) / 2), y, 0);
+    }
+
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return null;
+    }
+
+    @Override
+    public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+        return false;
+    }
+}
