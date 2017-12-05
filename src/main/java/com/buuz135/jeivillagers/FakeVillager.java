@@ -14,15 +14,15 @@ import javax.annotation.Nullable;
 
 public class FakeVillager implements IMerchant {
 
-    @Override
-    public void setCustomer(@Nullable EntityPlayer player) {
-
-    }
-
     @Nullable
     @Override
     public EntityPlayer getCustomer() {
         return null;
+    }
+
+    @Override
+    public void setCustomer(@Nullable EntityPlayer player) {
+
     }
 
     @Nullable

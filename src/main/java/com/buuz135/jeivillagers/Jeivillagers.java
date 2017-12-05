@@ -1,16 +1,12 @@
 package com.buuz135.jeivillagers;
 
-import com.buuz135.jeivillagers.jei.VillagerRecipe;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import mezz.jei.api.IModRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.IMerchant;
-import net.minecraft.entity.NpcMerchant;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,7 +20,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Mod(
         modid = Jeivillagers.MOD_ID,
@@ -59,53 +54,45 @@ public class Jeivillagers {
      */
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        long time = System.currentTimeMillis();
-        FakeVillager merchant = new FakeVillager();
-        Random random = new Random();
-        for (VillagerRegistry.VillagerProfession profession : ForgeRegistries.VILLAGER_PROFESSIONS) {
-            int id = 1;
-            VillagerRegistry.VillagerCareer original = profession.getCareer(0);
-            registerCareer(merchant, original,random);
-            while (!original.equals(profession.getCareer(id))) {
-                registerCareer(merchant, profession.getCareer(id), random);
-                ++id;
-            }
-        }
-        for (VillagerTradeInfo tradeInfo : tradeInfoMultimap.values()){
-            tradeInfo.clean();
-        }
-        System.out.println("Checked villager recipes in " + (System.currentTimeMillis()-time)+"ms.");
+
     }
 
-    private void registerCareer(IMerchant merchant,VillagerRegistry.VillagerCareer career, Random random) {
+    public static void registerCareer(IMerchant merchant, VillagerRegistry.VillagerCareer career, Random random) {
         int level = 0;
-        while (career.getTrades(level) != null  && level < 50) {
-            for (EntityVillager.ITradeList list : career.getTrades(level)){
+        while (career.getTrades(level) != null && level < 50) {
+            for (EntityVillager.ITradeList list : career.getTrades(level)) {
                 if (list.getClass().toString().endsWith("TreasureMapForEmeralds")) continue;
-                try{
+                try {
                     tradeInfoMultimap.put(career, generateTradeInfo(merchant, list, random));
-                } catch (Exception e){
-                    System.out.println("Error checking recipes for class "+list.getClass().toString());
+                } catch (Exception e) {
+                    System.out.println("Error checking recipes for class " + list.getClass().toString());
                 }
             }
             ++level;
         }
     }
 
-    private VillagerTradeInfo generateTradeInfo(IMerchant merchant, EntityVillager.ITradeList tradeList, Random random){
+    private static VillagerTradeInfo generateTradeInfo(IMerchant merchant, EntityVillager.ITradeList tradeList, Random random) {
         VillagerTradeInfo info = new VillagerTradeInfo();
-        for (int i = 0;  i < 100; ++i){
+        for (int i = 0; i < 100; ++i) {
             MerchantRecipeList list = new MerchantRecipeList();
             tradeList.addMerchantRecipe(merchant, list, random);
-            if (list.size() > 0){
+            if (list.size() > 0) {
                 info.addMerchantRecipeInfo(list.get(0));
             }
         }
         return info;
     }
 
+    /**
+     * This is the final initialization event. Register actions from other mods here
+     */
+    @Mod.EventHandler
+    public void postinit(FMLPostInitializationEvent event) {
 
-    public static class VillagerTradeInfo{
+    }
+
+    public static class VillagerTradeInfo {
 
         public ItemStack firstInput;
         public ItemStack secondInput;
@@ -121,26 +108,26 @@ public class Jeivillagers {
             outputStack = ItemStack.EMPTY;
         }
 
-        public void addMerchantRecipeInfo(MerchantRecipe recipe){
+        public void addMerchantRecipeInfo(MerchantRecipe recipe) {
             firstInput = cleanStack(recipe.getItemToBuy());
             secondInput = cleanStack(recipe.getSecondItemToBuy());
             outputStack = cleanStack(recipe.getItemToSell());
 
-            first =  checkPriceInfo(first, recipe.getItemToBuy());
+            first = checkPriceInfo(first, recipe.getItemToBuy());
             second = checkPriceInfo(second, recipe.getSecondItemToBuy());
             output = checkPriceInfo(output, recipe.getItemToSell());
         }
 
-        public ItemStack cleanStack(ItemStack stack){
+        public ItemStack cleanStack(ItemStack stack) {
             if (stack.isEmpty()) return stack;
             ItemStack cleaned = stack.copy();
             cleaned.setCount(1);
             return cleaned;
         }
 
-        public EntityVillager.PriceInfo checkPriceInfo(EntityVillager.PriceInfo info, ItemStack stack){
+        public EntityVillager.PriceInfo checkPriceInfo(EntityVillager.PriceInfo info, ItemStack stack) {
             if (stack.isEmpty()) return info;
-            if (info == null) return new EntityVillager.PriceInfo(stack.getCount(),stack.getCount());
+            if (info == null) return new EntityVillager.PriceInfo(stack.getCount(), stack.getCount());
             return new EntityVillager.PriceInfo(stack.getCount() < info.getFirst() ? stack.getCount() : info.getFirst(), stack.getCount() > info.getSecond() ? stack.getCount() : info.getSecond());
         }
 
@@ -150,22 +137,14 @@ public class Jeivillagers {
             output = cleanStackWithInfo(outputStack, output);
         }
 
-        private EntityVillager.PriceInfo cleanStackWithInfo(ItemStack stack, EntityVillager.PriceInfo info){
+        private EntityVillager.PriceInfo cleanStackWithInfo(ItemStack stack, EntityVillager.PriceInfo info) {
             if (info == null || stack.isEmpty()) return null;
-            if (info.getFirst().equals(info.getSecond())){
+            if (info.getFirst().equals(info.getSecond())) {
                 stack.setCount(info.getFirst());
                 return null;
             }
             return info;
         }
-    }
-
-    /**
-     * This is the final initialization event. Register actions from other mods here
-     */
-    @Mod.EventHandler
-    public void postinit(FMLPostInitializationEvent event) {
-
     }
 
     /**
