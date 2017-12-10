@@ -33,6 +33,7 @@ public class Jeivillagers {
     public static final String MOD_NAME = "Jeivillagers";
     public static final String VERSION = "1.0";
 
+
     public static Multimap<VillagerRegistry.VillagerCareer, VillagerTradeInfo> tradeInfoMultimap = ArrayListMultimap.create();
     /**
      * This is the instance of your mod as created by Forge. It will never be null.

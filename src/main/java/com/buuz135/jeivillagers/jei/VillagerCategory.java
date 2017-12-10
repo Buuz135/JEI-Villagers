@@ -1,6 +1,7 @@
 package com.buuz135.jeivillagers.jei;
 
 import com.buuz135.jeivillagers.Jeivillagers;
+import com.buuz135.jeivillagers.config.VillagerConfig;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -39,7 +40,7 @@ public class VillagerCategory implements IRecipeCategory<VillagerRecipe> {
     @SideOnly(Side.CLIENT)
     @Override
     public IDrawable getBackground() {
-        return helper.createDrawable(new ResourceLocation(Jeivillagers.MOD_ID, "textures/gui/villager.png"), 0, 0, 106, 26, 9, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT * 3 + 6, 0, 0);
+        return helper.createDrawable(new ResourceLocation(Jeivillagers.MOD_ID, "textures/gui/villager.png"), 0, 0, 106, 26, 9, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT * (VillagerConfig.CompactMode ? 1 : 3) + 6, 0, 0);
     }
 
     @Override

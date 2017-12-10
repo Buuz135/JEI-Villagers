@@ -1,6 +1,7 @@
 package com.buuz135.jeivillagers.jei;
 
 import com.buuz135.jeivillagers.Jeivillagers;
+import com.buuz135.jeivillagers.config.VillagerConfig;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -38,20 +39,33 @@ public class VillagerRecipe implements IRecipeWrapper {
     @Override
     public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         int y = 38;
-        drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Career: " + new TextComponentTranslation("entity.Villager." + career.getName()).getUnformattedComponentText(), 53, -1);
+        drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + (VillagerConfig.CompactMode ? "" : "Career: ") + new TextComponentTranslation("entity.Villager." + career.getName()).getUnformattedComponentText(), 53, -1);
         if (tradeInfo.first != null) {
-            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "First input range: " + tradeInfo.first.getFirst() + "-" + tradeInfo.first.getSecond(), 53, y);
-            y += minecraft.fontRenderer.FONT_HEIGHT + 2;
+            if (VillagerConfig.CompactMode){
+                drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY +""+ tradeInfo.first.getFirst() + "-" + tradeInfo.first.getSecond(), -18, 18);
+            }else{
+                drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "First input range: " + tradeInfo.first.getFirst() + "-" + tradeInfo.first.getSecond(), 53, y);
+                y += minecraft.fontRenderer.FONT_HEIGHT + 2;
+            }
         }
         if (tradeInfo.second != null) {
-            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Second input range: " + tradeInfo.second.getFirst() + "-" + tradeInfo.second.getSecond(), 53, y);
-            y += minecraft.fontRenderer.FONT_HEIGHT + 2;
+            if (VillagerConfig.CompactMode){
+                drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY +""+ tradeInfo.second.getFirst() + "-" + tradeInfo.second.getSecond(), 36, 34);
+            }else {
+                drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Second input range: " + tradeInfo.second.getFirst() + "-" + tradeInfo.second.getSecond(), 53, y);
+                y += minecraft.fontRenderer.FONT_HEIGHT + 2;
+            }
         }
         if (tradeInfo.output != null) {
-            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Output range: " + tradeInfo.output.getFirst() + "-" + tradeInfo.output.getSecond(), 53, y);
+            if (VillagerConfig.CompactMode){
+                drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY +""+ tradeInfo.output.getFirst() + "-" + tradeInfo.output.getSecond(), 126, 18);
+            }else {
+                drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Output range: " + tradeInfo.output.getFirst() + "-" + tradeInfo.output.getSecond(), 53, y);
+            }
         }
         if (tradeInfo.outputStack.isItemEnchanted() || tradeInfo.outputStack.getItem().equals(Items.ENCHANTED_BOOK)) {
-            drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Output with random enchant", 53, y);
+            if (VillagerConfig.CompactMode) drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "random", 95, y);
+            else drawStringCentered(minecraft.fontRenderer, TextFormatting.DARK_GRAY + "Output with random enchant", 53, y);
         }
     }
 
