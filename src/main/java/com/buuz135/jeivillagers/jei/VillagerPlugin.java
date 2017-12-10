@@ -7,6 +7,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -61,6 +62,7 @@ public class VillagerPlugin implements IModPlugin {
         for (VillagerRegistry.VillagerCareer career : tradeInfoMultimap.keySet()) {
             registry.addRecipes(tradeInfoMultimap.get(career).stream().filter(villagerTradeInfo -> !villagerTradeInfo.outputStack.isEmpty()).map(villagerTradeInfo -> new VillagerRecipe(career, villagerTradeInfo)).collect(Collectors.toList()), category.getUid());
         }
+        registry.addRecipeClickArea(GuiMerchant.class, 82, 52, 26, 15, category.getUid());
     }
 
     @Override
