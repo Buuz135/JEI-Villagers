@@ -68,7 +68,6 @@ public class VillagerPlugin implements IModPlugin {
         for (Jeivillagers.VillagerTradeInfo tradeInfo : tradeInfoMultimap.values()) {
             tradeInfo.clean();
         }
-
         for (VillagerRegistry.VillagerCareer career : tradeInfoMultimap.keySet()) {
             registry.addRecipes(tradeInfoMultimap.get(career).stream().filter(villagerTradeInfo -> !villagerTradeInfo.outputStack.isEmpty()).map(villagerTradeInfo -> new VillagerRecipe(career, villagerTradeInfo)).collect(Collectors.toList()), category.getUid());
         }

@@ -1,5 +1,6 @@
 package com.buuz135.jeivillagers;
 
+import com.buuz135.jeivillagers.config.VillagerConfig;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
@@ -59,7 +60,7 @@ public class Jeivillagers {
     }
 
     public static void registerCareer(IMerchant merchant, VillagerRegistry.VillagerCareer career, Random random) {
-        if (career.getClass().getName().endsWith("XUVillagerCareer"))return; //TODO PROPER BLACKLIST
+        if (isClassBlackListed(career.getClass()))return;
         int level = 0;
         while (career.getTrades(level) != null && level < 50) {
             for (EntityVillager.ITradeList list : career.getTrades(level)) {
@@ -84,6 +85,13 @@ public class Jeivillagers {
             }
         }
         return info;
+    }
+
+    public static boolean isClassBlackListed(Class<?> clazz){
+        for (String blackListedVillagerClasses : VillagerConfig.BlackListedVillagerClasses){
+            if (clazz.getName().endsWith(blackListedVillagerClasses)) return true;
+        }
+        return false;
     }
 
     /**

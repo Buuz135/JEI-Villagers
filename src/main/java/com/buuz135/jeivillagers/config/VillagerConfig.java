@@ -13,6 +13,9 @@ public class VillagerConfig {
     @Config.Comment("If enabled will reduce the amount of text displayed in JEI recipes")
     public static boolean CompactMode = false;
 
+    @Config.Comment("A list of blacklisted VillagerCareer classes that causes incompatibilities as they are implemented differently (not using the MC way) or just don't want to be shown in JEI. Removing the defaults can cause issues")
+    public static String[] BlackListedVillagerClasses = new String[]{"XUVillagerCareer"};
+
     @Mod.EventBusSubscriber(modid = Jeivillagers.MOD_ID)
     private static class EventHandler{
         @SubscribeEvent

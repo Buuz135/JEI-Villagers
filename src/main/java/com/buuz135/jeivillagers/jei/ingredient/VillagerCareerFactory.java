@@ -14,9 +14,9 @@ public class VillagerCareerFactory {
         for (VillagerRegistry.VillagerProfession profession : ForgeRegistries.VILLAGER_PROFESSIONS) {
             int id = 1;
             VillagerRegistry.VillagerCareer original = profession.getCareer(0);
-            if (!profession.getCareer(0).getClass().getName().endsWith("XUVillagerCareer")) careers.add(profession.getCareer(0));
+            if (!Jeivillagers.isClassBlackListed(profession.getCareer(0).getClass())) careers.add(profession.getCareer(0));
             while (!original.equals(profession.getCareer(id))) {
-                if (!profession.getCareer(id).getClass().getName().endsWith("XUVillagerCareer")) careers.add(profession.getCareer(id)); //TODO add mod blacklist
+                if (!Jeivillagers.isClassBlackListed(profession.getCareer(0).getClass())) careers.add(profession.getCareer(id));
                 ++id;
             }
         }
