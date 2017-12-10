@@ -30,6 +30,8 @@ public class VillagerRecipe implements IRecipeWrapper {
     public void getIngredients(IIngredients ingredients) {
         ingredients.setInputs(ItemStack.class, Arrays.asList(tradeInfo.firstInput, tradeInfo.secondInput));
         ingredients.setOutput(ItemStack.class, tradeInfo.outputStack);
+        ingredients.setOutput(VillagerRegistry.VillagerCareer.class, career);
+        ingredients.setInput(VillagerRegistry.VillagerCareer.class, career);
     }
 
     @SideOnly(Side.CLIENT)
@@ -60,11 +62,22 @@ public class VillagerRecipe implements IRecipeWrapper {
 
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        int x = 53;
+        int y = 0;
+        int size = Minecraft.getMinecraft().fontRenderer.getStringWidth(TextFormatting.DARK_GRAY + "Career: " + new TextComponentTranslation("entity.Villager." + career.getName()).getUnformattedComponentText());
+        if (mouseX > x-size/2 -4 && mouseX < x+size/2 +4 && mouseY > y -4 && mouseY < y+Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) return Arrays.asList("Show recipes for "+new TextComponentTranslation("entity.Villager." + career.getName()).getUnformattedComponentText()+ " career");
         return null;
     }
 
     @Override
     public boolean handleClick(Minecraft minecraft, int mouseX, int mouseY, int mouseButton) {
+        int x = 53;
+        int y = 0;
+        int size = Minecraft.getMinecraft().fontRenderer.getStringWidth(TextFormatting.DARK_GRAY + "Career: " + new TextComponentTranslation("entity.Villager." + career.getName()).getUnformattedComponentText());
+        if (mouseX > x-size/2 -4 && mouseX < x+size/2 +4 && mouseY > y -4 && mouseY < y+Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT){
+            VillagerPlugin.showUses(career);
+            return true;
+        }
         return false;
     }
 }

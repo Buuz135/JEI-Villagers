@@ -9,6 +9,7 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,5 +52,7 @@ public class VillagerCategory implements IRecipeCategory<VillagerRecipe> {
         recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
         recipeLayout.getItemStacks().set(1, ingredients.getInputs(ItemStack.class).get(1));
         recipeLayout.getItemStacks().set(2, ingredients.getOutputs(ItemStack.class).get(0));
+        ingredients.setOutput(VillagerRegistry.VillagerCareer.class, ingredients.getOutputs(VillagerRegistry.VillagerCareer.class).get(0));
+        ingredients.setInput(VillagerRegistry.VillagerCareer.class, ingredients.getInputs(VillagerRegistry.VillagerCareer.class).get(0));
     }
 }

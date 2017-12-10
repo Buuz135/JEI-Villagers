@@ -58,6 +58,7 @@ public class Jeivillagers {
     }
 
     public static void registerCareer(IMerchant merchant, VillagerRegistry.VillagerCareer career, Random random) {
+        if (career.getClass().getName().endsWith("XUVillagerCareer"))return; //TODO PROPER BLACKLIST
         int level = 0;
         while (career.getTrades(level) != null && level < 50) {
             for (EntityVillager.ITradeList list : career.getTrades(level)) {
