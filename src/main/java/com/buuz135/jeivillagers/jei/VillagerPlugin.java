@@ -50,7 +50,6 @@ public class VillagerPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-
         registry.addRecipeCatalyst(getVillagerEgg(), category.getUid());
 
         tradeInfoMultimap.clear();
