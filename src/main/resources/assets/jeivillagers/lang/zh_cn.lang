@@ -1,0 +1,8 @@
+jeivillagers.category=村民交易
+jeivillagers.career=职业：
+jeivillagers.first.input=第一次交易物品输入范围：
+jeivillagers.second.input=第二次交易物品输入范围：
+jeivillagers.output=交易物品输出范围：
+jeivillagers.random.enchant.output=交易输出物品将会随机附魔
+jeivillagers.recipes.show.text1=仅展示
+jeivillagers.recipes.show.text2=的交易配方

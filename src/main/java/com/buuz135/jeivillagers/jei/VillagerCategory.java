@@ -8,6 +8,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
@@ -29,7 +30,7 @@ public class VillagerCategory implements IRecipeCategory<VillagerRecipe> {
 
     @Override
     public String getTitle() {
-        return "Villager Trades";
+        return I18n.format(Jeivillagers.MOD_ID + ".category");
     }
 
     @Override
